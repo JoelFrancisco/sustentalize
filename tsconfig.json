@@ -6,6 +6,13 @@
         "lib": [
             "esnext"
         ],
-        "esModuleInterop": true
+        "esModuleInterop": true,
+        "baseUrl": ".",
+        "paths": {
+            "@controllers/*": ["./src/controllers/*"],
+            "@repositories/*": ["./src/repositories/*"],
+            "@entities/*": ["./src/entities/*"],
+            "@utils/*": ["./src/utils/*"],
+        }
     }
 }

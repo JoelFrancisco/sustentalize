@@ -1,43 +1,25 @@
 import { Request, Response } from "express";
 import { PrismaClient } from "@prisma/client";
-import { hash } from 'bcryptjs';
 
-interface UserAtributes {
-  id: number;
-  username: string;
-  email: string;
-  password: string;
-}
+import { User } from '@entities/User';
+import { UserRepository } from '@repositories/implementation/PostgresUserRepository';
+import { BcryptPassword } from '@utils/hash/Implementation/BcryptHashPassword';
 
-class CreateUser {
+export class CreateUser {
   public static async create(req: Request, res: Response) {
     const prisma = new PrismaClient();
+    const bcryptPassword = new BcryptPassword(); 
+    const userRepository = new UserRepository(prisma, bcryptPassword);
 
     try { 
-      const user: UserAtributes = { ...req.body };
+      const user: User = { ...req.body };
       
-      const hashedPassword = await hash(user.password, 10);
+      const message = await userRepository.store(user);
       
-      user.password = hashedPassword;
+      if (message !== 'User created successfully') 
+        return res.json({ message });
 
-      const userExists = await prisma.user.findUnique({ 
-        where: { 
-          username: user.username
-        } 
-      });
-
-      if (userExists) {
-        return res.json({ message: 'User Already exists' });
-      }
-
-      await prisma.user.create({ 
-        data: { 
-          ...user
-        }
-      });
-
-      return res.status(200).json({ message: 'User created'});
-
+      return res.status(200).json({ message });
     } catch (err) {
       return res.json({ message: "Error Creating User"});
     } finally {
@@ -45,5 +27,3 @@ class CreateUser {
     }
   }
 }
-
-export { CreateUser }
