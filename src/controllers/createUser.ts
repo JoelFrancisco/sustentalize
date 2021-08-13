@@ -1,9 +1,9 @@
 import { Request, Response } from "express";
 import { PrismaClient } from "@prisma/client";
 
-import { User } from '@entities/User';
-import { UserRepository } from '@repositories/implementation/PostgresUserRepository';
-import { BcryptPassword } from '@utils/hash/Implementation/BcryptHashPassword';
+import { User } from "../entities/User";
+import { UserRepository } from "../repositories/implementation/PostgresUserRepository";
+import { BcryptPassword } from "../utils/hash/Implementation/BcryptHashPassword";
 
 export class CreateUser {
   public static async create(req: Request, res: Response) {
@@ -17,7 +17,7 @@ export class CreateUser {
       const message = await userRepository.store(user);
       
       if (message !== 'User created successfully') 
-        return res.json({ message });
+        return res.status(404).json({ message });
 
       return res.status(200).json({ message });
     } catch (err) {

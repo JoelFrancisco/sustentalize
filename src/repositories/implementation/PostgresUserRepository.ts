@@ -1,8 +1,8 @@
-import { PrismaClient } from '@prisma/client';
+import { PrismaClient } from "@prisma/client";
 
-import { User } from "@entities/User";
-import { IUserRepository } from '@repositories/IUserRepository';
-import { IHashPassword } from '@utils/hash/IHashPassword';
+import { User } from "../../entities/User";
+import { IUserRepository } from "../IUserRepository";
+import { IHashPassword } from "../../utils/hash/IHashPassword";
 
 export class UserRepository implements IUserRepository {
   private client;
