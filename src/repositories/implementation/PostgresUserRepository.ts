@@ -58,7 +58,9 @@ export class UserRepository implements IUserRepository {
       
       await this.client.user.create({
         data: {
-          ...newUser
+          ...newUser,
+          activation_id: '1',
+          activated: true
         }
       })
       
