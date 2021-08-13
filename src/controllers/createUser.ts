@@ -27,8 +27,12 @@ export class CreateUser {
       
       if (message !== 'User created successfully') 
         return res.status(404).json({ message });
-      
+
       const mailStatus = await this.handleEmail(user);
+
+      if (!mailStatus) {
+        return res.json({ message: "Não foi possível enviar email de confirmação" });
+      }
 
       return res.status(200).json({ message });
     } catch (err) {
@@ -50,6 +54,7 @@ export class CreateUser {
       user.email,
       `${user.username} ative sua conta no sustentalize`,
       `<a href="">Clique no link para ativar sua conta</a>
+      <p>${user.activation_id}</p>
       <p>Caso não tenha solicitado uma conta no sustentalize ignore esse email</p>
       `,
     );

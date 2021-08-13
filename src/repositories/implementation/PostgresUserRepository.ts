@@ -28,6 +28,22 @@ export class UserRepository implements IUserRepository {
       await this.client.$disconnect();
     }
   }
+
+  public async findByActivationId(activation_id: string) {
+    try {
+      const user = await this.client.user.findUnique({ 
+        where: { 
+          activation_id
+        }
+      });
+      
+      return user;
+    } catch (err: any) {
+      throw new Error(err.message);
+    } finally {
+      await this.client.$disconnect();
+    }
+  }
   
   public async store(newUser: User) {
     try {
@@ -56,8 +72,8 @@ export class UserRepository implements IUserRepository {
       const hashedPassword = await this.hash.hash(newUser.password);
       newUser.password = hashedPassword;
       
-      const hashedActivationId = await this.hash.hash(newUser.activation_id);
-      newUser.activation_id = hashedActivationId;
+      // const hashedActivationId = await this.hash.hash(newUser.activation_id);
+      // newUser.activation_id = hashedActivationId;
       
       await this.client.user.create({
         data: {
@@ -66,6 +82,23 @@ export class UserRepository implements IUserRepository {
       })
       
       return 'User created successfully'
+    } catch (err: any) {
+      throw new Error(err.message);
+    } finally {
+      await this.client.$disconnect();
+    }
+  }
+  
+  public async updateUser(user: User) {
+    try {
+      await this.client.user.update({ 
+        where: { 
+          email: user.email
+        },
+        data: {
+          ...user 
+        }
+      });
     } catch (err: any) {
       throw new Error(err.message);
     } finally {
