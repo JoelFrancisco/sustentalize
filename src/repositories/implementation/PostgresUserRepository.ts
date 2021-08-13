@@ -56,6 +56,9 @@ export class UserRepository implements IUserRepository {
       const hashedPassword = await this.hash.hash(newUser.password);
       newUser.password = hashedPassword;
       
+      const hashedActivationId = await this.hash.hash(newUser.activation_id);
+      newUser.activation_id = hashedActivationId;
+      
       await this.client.user.create({
         data: {
           ...newUser

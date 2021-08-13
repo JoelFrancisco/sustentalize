@@ -7,10 +7,12 @@ datasource db {
 }
 
 model User {
-  id          Int      @default(autoincrement()) @id
-  email       String   @unique
-  username    String   @unique
-  password    String
+  id                Int      @default(autoincrement()) @id
+  email             String   @unique
+  username          String   @unique
+  password          String
+  activated         Boolean  @default(false)
+  activation_id     String   @unique
 }
 
 generator client {
