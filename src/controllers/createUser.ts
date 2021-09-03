@@ -1,10 +1,9 @@
 import { Request, Response } from "express";
-import { PrismaClient } from "@prisma/client";
-import { uuid } from "uuidv4";
+import { PrismaClient, User } from "@prisma/client";
+import { randomUUID } from 'crypto'; 
 import { config } from 'dotenv';
 config();
 
-import { User } from "../entities/User";
 import { UserRepository } from "../repositories/implementation/PostgresUserRepository";
 import { BcryptPassword } from "../utils/hash/Implementation/BcryptHashPassword";
 import { MailOptions } from '../entities/MailOptions';
@@ -20,7 +19,7 @@ export class CreateUser {
     try { 
       const user: User = { ...req.body };
 
-      user.activation_id = uuid();
+      user.activation_id = randomUUID();
       user.activated = false;
       
       const message = await userRepository.store(user);
@@ -28,11 +27,13 @@ export class CreateUser {
       if (message !== 'User created successfully') 
         return res.status(404).json({ message });
 
+      /* 
       const mailStatus = await this.handleEmail(user);
 
       if (!mailStatus) {
         return res.json({ message: "Não foi possível enviar email de confirmação" });
       }
+      */
 
       return res.status(200).json({ message });
     } catch (err) {

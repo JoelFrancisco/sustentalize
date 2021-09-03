@@ -1,6 +1,5 @@
-import { PrismaClient } from "@prisma/client";
+import { PrismaClient, User } from "@prisma/client";
 
-import { User } from "../../entities/User";
 import { IUserRepository } from "../IUserRepository";
 import { IHashPassword } from "../../utils/hash/IHashPassword";
 
@@ -12,7 +11,7 @@ export class UserRepository implements IUserRepository {
     this.client = client;
     this.hash = hash;
   }
-  
+
   public async findByEmail(email: string) {
     try {
       const user = await this.client.user.findUnique({ 
@@ -44,6 +43,22 @@ export class UserRepository implements IUserRepository {
       await this.client.$disconnect();
     }
   }
+
+  public async findBySessionId(session_id: string) {
+    try {
+      const user = await this.client.user.findUnique({ 
+        where: { 
+          session_id
+        }
+      });
+      
+      return user;
+    } catch (err: any) {
+      throw new Error(err.message);
+    } finally {
+      await this.client.$disconnect();
+    }
+  }
   
   public async store(newUser: User) {
     try {
@@ -52,7 +67,7 @@ export class UserRepository implements IUserRepository {
           username: newUser.username
         }
       });
-      
+
       const emailAlreadyUsed = await this.client.user.findUnique({ 
         where: {
           email: newUser.email
@@ -66,8 +81,7 @@ export class UserRepository implements IUserRepository {
         return 'Username already used.';
       
       if (emailAlreadyUsed) 
-        return 'Email already used.'
-        ;
+        return 'Email already used.';
       
       const hashedPassword = await this.hash.hash(newUser.password);
       newUser.password = hashedPassword;
@@ -89,11 +103,11 @@ export class UserRepository implements IUserRepository {
     }
   }
   
-  public async updateUser(user: User) {
+  public async updateUser(user: User | null) {
     try {
       await this.client.user.update({ 
         where: { 
-          email: user.email
+          email: user?.email
         },
         data: {
           ...user 

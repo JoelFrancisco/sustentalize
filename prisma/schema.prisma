@@ -11,15 +11,21 @@ model User {
   email         String      @unique
   username      String      @unique
   password      String
+  session_id    String      @unique 
   activated     Boolean     @default(false)
   activation_id String      @unique
-  Addresses     Addresses[]
+  addresses     Addresses[]
 }
 
 model Addresses {
-  id      Int   @id @default(autoincrement())
-  user    User? @relation(fields: [user_id], references: [id])
-  user_id Int?
+  id       Int    @id @default(autoincrement())
+  addresss String
+  number   String
+  cep      String
+  district String
+  state    String
+  user     User?  @relation(fields: [user_id], references: [id])
+  user_id  Int?
 }
 
 generator client {
