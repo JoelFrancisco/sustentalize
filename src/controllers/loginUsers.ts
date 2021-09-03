@@ -28,6 +28,8 @@ export class LoginUser {
 
       const id = randomUUID();
       res.cookie('session_id', id, { httpOnly: true, maxAge: 1200000 });
+      user!.session_id = id;
+      await userRepository.updateUser(user);
       return res.json({ auth: true });
     } catch (err) {
       return res.json({ message: "Error login user" });
