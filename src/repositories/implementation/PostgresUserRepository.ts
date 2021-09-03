@@ -1,6 +1,5 @@
-import { PrismaClient } from "@prisma/client";
+import { PrismaClient, User } from "@prisma/client";
 
-import { User } from "../../entities/User";
 import { IUserRepository } from "../IUserRepository";
 import { IHashPassword } from "../../utils/hash/IHashPassword";
 
@@ -12,12 +11,44 @@ export class UserRepository implements IUserRepository {
     this.client = client;
     this.hash = hash;
   }
-  
+
   public async findByEmail(email: string) {
     try {
       const user = await this.client.user.findUnique({ 
         where: { 
           email: email
+        }
+      });
+      
+      return user;
+    } catch (err: any) {
+      throw new Error(err.message);
+    } finally {
+      await this.client.$disconnect();
+    }
+  }
+
+  public async findByActivationId(activation_id: string) {
+    try {
+      const user = await this.client.user.findUnique({ 
+        where: { 
+          activation_id
+        }
+      });
+      
+      return user;
+    } catch (err: any) {
+      throw new Error(err.message);
+    } finally {
+      await this.client.$disconnect();
+    }
+  }
+
+  public async findBySessionId(session_id: string) {
+    try {
+      const user = await this.client.user.findUnique({ 
+        where: { 
+          session_id
         }
       });
       
@@ -36,7 +67,7 @@ export class UserRepository implements IUserRepository {
           username: newUser.username
         }
       });
-      
+
       const emailAlreadyUsed = await this.client.user.findUnique({ 
         where: {
           email: newUser.email
@@ -50,11 +81,13 @@ export class UserRepository implements IUserRepository {
         return 'Username already used.';
       
       if (emailAlreadyUsed) 
-        return 'Email already used.'
-        ;
+        return 'Email already used.';
       
       const hashedPassword = await this.hash.hash(newUser.password);
       newUser.password = hashedPassword;
+      
+      // const hashedActivationId = await this.hash.hash(newUser.activation_id);
+      // newUser.activation_id = hashedActivationId;
       
       await this.client.user.create({
         data: {
@@ -65,6 +98,23 @@ export class UserRepository implements IUserRepository {
       })
       
       return 'User created successfully'
+    } catch (err: any) {
+      throw new Error(err.message);
+    } finally {
+      await this.client.$disconnect();
+    }
+  }
+  
+  public async updateUser(user: User | null) {
+    try {
+      await this.client.user.update({ 
+        where: { 
+          email: user?.email
+        },
+        data: {
+          ...user 
+        }
+      });
     } catch (err: any) {
       throw new Error(err.message);
     } finally {
