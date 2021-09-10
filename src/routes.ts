@@ -10,7 +10,7 @@ router.get('/test', (req, res) => {
 });
 
 router.post('/user', CreateUser.create);
-router.post('/verify', VerifySessionId.verify);
+router.get('/verify', VerifySessionId.verify);
 router.post('/login', LoginUser.login);
 
 export { router };
