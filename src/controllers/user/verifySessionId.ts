@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 import { PrismaClient, User } from '@prisma/client';
-import { UserRepository } from '../repositories/implementation/PostgresUserRepository';
-import { BcryptPassword } from '../utils/hash/Implementation/BcryptHashPassword';
+import { UserRepository } from '../../repositories/implementation/PostgresUserRepository';
+import { BcryptPassword } from '../../utils/hash/Implementation/BcryptHashPassword';
 
 export class VerifySessionId {
   public static async verify(req: Request, res: Response) {

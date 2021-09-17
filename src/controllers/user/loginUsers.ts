@@ -1,9 +1,9 @@
-import { PrismaClient, User } from '@prisma/client';
+import { PrismaClient } from '@prisma/client';
 import { v4 as uuidv4 } from 'uuid';
 import { Request, Response } from "express";
 
-import { BcryptPassword } from '../utils/hash/Implementation/BcryptHashPassword';
-import { UserRepository } from '../repositories/implementation/PostgresUserRepository';
+import { BcryptPassword } from '../../utils/hash/Implementation/BcryptHashPassword';
+import { UserRepository } from '../../repositories/implementation/PostgresUserRepository';
 
 export class LoginUser {
   public static async login(req: Request, res: Response) {
