@@ -2,8 +2,8 @@ import { Request, Response } from "express";
 import { PrismaClient, Product } from "@prisma/client";
 import { ProductRepository } from "../../repositories/implementation/PostgressProductRepository";
 
-export class CreateProduct {
-  public static async create(req: Request, res: Response) {
+export class UpdateProduct {
+  public static async update(req: Request, res: Response) {
     const prisma = new PrismaClient();
     const productRepository = new ProductRepository(prisma);
 

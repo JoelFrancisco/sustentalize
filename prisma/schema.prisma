@@ -7,24 +7,14 @@ datasource db {
 }
 
 model User {
-  id            Int         @id @default(autoincrement())
-  email         String      @unique
-  username      String      @unique
-  password      String
-  session_id    String?     @unique
-  address       Addresses[]
+  id         Int         @id @default(autoincrement())
+  email      String      @unique
+  username   String      @unique
+  password   String
+  session_id String?     @unique
+  address    Addresses[]
+  cart       Product[]
 }
-
-// model User {
-//   id            Int         @id @default(autoincrement())
-//   email         String      @unique
-//   username      String      @unique
-//   password      String
-//   session_id    String      @unique 
-//   activated     Boolean?    @default(false)
-//   activation_id String      @unique
-//   addresses     Addresses[]
-// }
 
 model Addresses {
   id       Int    @id @default(autoincrement())
@@ -33,17 +23,19 @@ model Addresses {
   cep      String
   district String
   state    String
-  user     User @relation(fields: [user_id], references: [id])
+  user     User   @relation(fields: [user_id], references: [id])
   user_id  Int
 }
 
 model Product {
-  id          Int @id @default(autoincrement())
+  id          Int    @id @default(autoincrement())
   name        String
   price       Float
   size        String
   color       String
   description String
+  User        User?  @relation(fields: [userId], references: [id])
+  userId      Int?
 }
 
 generator client {

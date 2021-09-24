@@ -3,14 +3,14 @@ import { PrismaClient } from "@prisma/client";
 import { ProductRepository } from "../../repositories/implementation/PostgressProductRepository";
 
 export class ListProduct {
-  public static async create(req: Request, res: Response) {
+  public static async list(req: Request, res: Response) {
     const prisma = new PrismaClient();
     const productRepository = new ProductRepository(prisma);
 
     try {
-      const id = req.body.id;
+      const id = req.params.id;
 
-      const product = await productRepository.findById(id);
+      const product = await productRepository.findById(Number.parseInt(id));
 
       return res
         .status(201)
