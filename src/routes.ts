@@ -7,6 +7,8 @@ import { ListProduct } from './controllers/product/listProductById';
 import { UpdateProduct } from './controllers/product/updateProductController';
 import { DeleteProduct } from './controllers/product/deleteProductController';
 
+import { stripeProduct } from './controllers/stripeProduct';
+
 const router = Router();
 
 router.get('/test', (req, res) => {
@@ -21,5 +23,7 @@ router.post('/product', CreateProduct.create);
 router.get('/product', ListProduct.list);
 router.put('/product', UpdateProduct.update);
 router.delete('/product', DeleteProduct.delete);
+
+router.get('/products', stripeProduct);
 
 export { router };
