@@ -8,11 +8,11 @@
         ],
         "esModuleInterop": true,
         "baseUrl": ".",
-        "paths": {
-            "@controllers/*": ["./src/controllers/*"],
-            "@repositories/*": ["./src/repositories/*"],
-            "@entities/*": ["./src/entities/*"],
-            "@utils/*": ["./src/utils/*"],
-        }
+        // "paths": {
+        //     "@controllers/*": ["./src/controllers/*"],
+        //     "@repositories/*": ["./src/repositories/*"],
+        //     "@entities/*": ["./src/entities/*"],
+        //     "@utils/*": ["./src/utils/*"],
+        // }
     }
 }

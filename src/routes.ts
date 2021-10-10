@@ -1,7 +1,11 @@
+import { CreateProduct } from './controllers/product/createProduct';
 import { Router } from "express";
-import { CreateUser } from './controllers/createUser';
-import { LoginUser } from "@controllers/loginUsers";
-import { VerifySessionId } from "@controllers/verifySessionId";
+import { CreateUser } from './controllers/user/createUser';
+import { LoginUser } from "./controllers/user/loginUsers";
+import { VerifySessionId } from "./controllers/user/verifySessionId";
+import { ListProduct } from './controllers/product/listProductById';
+import { UpdateProduct } from './controllers/product/updateProductController';
+import { DeleteProduct } from './controllers/product/deleteProductController';
 
 const router = Router();
 
@@ -10,7 +14,12 @@ router.get('/test', (req, res) => {
 });
 
 router.post('/user', CreateUser.create);
-router.post('/verify', VerifySessionId.verify);
+router.get('/verify', VerifySessionId.verify);
 router.post('/login', LoginUser.login);
+
+router.post('/product', CreateProduct.create);
+router.get('/product', ListProduct.list);
+router.put('/product', UpdateProduct.update);
+router.delete('/product', DeleteProduct.delete);
 
 export { router };

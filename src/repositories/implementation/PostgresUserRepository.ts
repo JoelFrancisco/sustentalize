@@ -16,23 +16,7 @@ export class UserRepository implements IUserRepository {
     try {
       const user = await this.client.user.findUnique({ 
         where: { 
-          email: email
-        }
-      });
-      
-      return user;
-    } catch (err: any) {
-      throw new Error(err.message);
-    } finally {
-      await this.client.$disconnect();
-    }
-  }
-
-  public async findByActivationId(activation_id: string) {
-    try {
-      const user = await this.client.user.findUnique({ 
-        where: { 
-          activation_id
+          email
         }
       });
       
@@ -88,13 +72,11 @@ export class UserRepository implements IUserRepository {
       
       // const hashedActivationId = await this.hash.hash(newUser.activation_id);
       // newUser.activation_id = hashedActivationId;
+
+      console.table(newUser)
       
       await this.client.user.create({
-        data: {
-          ...newUser,
-          activation_id: '1',
-          activated: true
-        }
+        data: { ...newUser }
       })
       
       return 'User created successfully'
@@ -106,6 +88,8 @@ export class UserRepository implements IUserRepository {
   }
   
   public async updateUser(user: User | null) {
+    console.log(`USER: ${user}`);
+
     try {
       await this.client.user.update({ 
         where: { 
