@@ -7,25 +7,24 @@ datasource db {
 }
 
 model User {
-  id         Int         @id @default(autoincrement())
-  email      String      @unique
-  username   String      @unique
+  id         Int       @id @default(autoincrement())
+  email      String    @unique
+  username   String    @unique
   password   String
-  session_id String?     @unique
-  address    Addresses[]
-  cart       Product[]
+  session_id String?   @unique
+  Product    Product[]
 }
 
-model Addresses {
-  id       Int    @id @default(autoincrement())
-  addresss String
-  number   String
-  cep      String
-  district String
-  state    String
-  user     User   @relation(fields: [user_id], references: [id])
-  user_id  Int
-}
+// model Addresses {
+//   id       Int    @id @default(autoincrement())
+//   addresss String
+//   number   String
+//   cep      String
+//   district String
+//   state    String
+//   user     User   @relation(fields: [user_id], references: [id])
+//   user_id  Int
+// }
 
 model Product {
   id          Int    @id @default(autoincrement())
