@@ -14,5 +14,6 @@
         //     "@entities/*": ["./src/entities/*"],
         //     "@utils/*": ["./src/utils/*"],
         // }
-    }
+    },
+    "include": ["src/**/*"]
 }

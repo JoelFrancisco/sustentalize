@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 import { PrismaClient, Product } from '@prisma/client';
-import { ProductRepository } from '../../repositories/implementation/PostgressProductRepository';
-import { UserRepository } from '../../repositories/implementation/PostgresUserRepository';
+import { ProductRepository } from '../../repositories/Implementation/PostgressProductRepository';
+import { UserRepository } from '../../repositories/Implementation/PostgresUserRepository';
 import { BcryptPassword } from '../hash/Implementation/BcryptHashPassword';
 
 export class Cart {
