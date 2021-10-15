@@ -1,7 +1,7 @@
-import { Request, Response } from 'express';
-import { PrismaClient, Product } from '@prisma/client';
-import { ProductRepository } from '../../repositories/Implementation/PostgressProductRepository';
-import { UserRepository } from '../../repositories/Implementation/PostgresUserRepository';
+/*import { Request, Response } from 'express';
+import { PrismaClient } from '@prisma/client';
+import { ProductRepository } from '../../repositories/ProductRepository/Implementation/PostgressProductRepository';
+import { UserRepository } from '../../repositories/UserRepository/Implementation/PostgresUserRepository';
 import { BcryptPassword } from '../hash/Implementation/BcryptHashPassword';
 
 export class Cart {
@@ -9,7 +9,7 @@ export class Cart {
     const prisma = new PrismaClient();
     const productRepository = new ProductRepository(prisma);
     const bcryptPassword = new BcryptPassword();
-    const userRepository = new UserRepository(prisma, bcryptPassword);
+    const userRepository = new UserRepository(prisma );
 
     try {
       const productId = req.body.id;
@@ -57,4 +57,4 @@ export class Cart {
       .status(201)
       .json({ message: "Product added successfully"})
   }
-}
+}*/

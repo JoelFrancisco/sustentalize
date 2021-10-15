@@ -1,6 +1,7 @@
-import { PrismaClient, Product } from "@prisma/client";
+import { PrismaClient } from "@prisma/client";
 
 import { IProductRepository } from "../IProductRepository";
+import { Product } from "../../../entities/Product";
 
 export class ProductRepository implements IProductRepository {
   private client;
@@ -17,7 +18,7 @@ export class ProductRepository implements IProductRepository {
         }
       });
 
-      return product;
+      return product as Product;
     } catch (err: any) {
       throw new Error(err.message);
     } finally {
@@ -28,7 +29,7 @@ export class ProductRepository implements IProductRepository {
   public async listAll() {
     try {
       const products = await this.client.product.findMany();
-      return products;
+      return products as Product[];
     } catch(err: any) {
       throw new Error(err.message);
     } finally {
@@ -54,40 +55,35 @@ export class ProductRepository implements IProductRepository {
   }
 
   public async store(product: Product) {
-    console.log("Product from store in repository", product);
-
-    let productDoesntExistYet;
-
     try {
-      productDoesntExistYet = await this.client.product.findFirst({
+      const nameAlreadyUsed = await this.client.product.findUnique({
         where: {
           name: product.name
         }
       });
-
-      console.log("AAAAAAAAAAAAAAAAAAAAA", productDoesntExistYet);
-    } catch(err: any) {
-      throw new Error(err.message);
-    } finally {
-      await this.client.$disconnect();
-    }
-    
-    console.log("Product doesn't exist yet", productDoesntExistYet);
-
-    if (productDoesntExistYet) 
-      return false;
-
-    try {
+      
+      if (nameAlreadyUsed)
+        return {
+          error: true, 
+          message: 'Product name already used'
+        }
+        
       await this.client.product.create({
         data: { ...product }
-      });
+      })
+      
+      return { 
+        error: false, 
+        message: 'Product created successfully'
+      }
     } catch(err: any) {
-      throw new Error(err.message);
+      return { 
+        error: true, 
+        message: err.message
+      }
     } finally {
       await this.client.$disconnect();
     }
-
-    return product;
   }
 
   public async delete(id: number) {
@@ -104,3 +100,4 @@ export class ProductRepository implements IProductRepository {
     }
   }
 } 
+

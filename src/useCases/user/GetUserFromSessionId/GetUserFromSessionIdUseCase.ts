@@ -1,4 +1,4 @@
-import { IUserRepository } from "src/repositories/IUserRepository";
+import { IUserRepository } from '../../../repositories/UserRepository/IUserRepository';
 
 export class GetUserFromSessionIdUseCase {
   constructor(

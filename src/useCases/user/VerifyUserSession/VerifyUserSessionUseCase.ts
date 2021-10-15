@@ -1,4 +1,4 @@
-import { UserRepository } from "src/repositories/Implementation/PostgresUserRepository";
+import { UserRepository } from "../../../repositories/UserRepository/Implementation/PostgresUserRepository";
 
 export class VerifyUserSessionUseCase {
   constructor(
@@ -8,9 +8,9 @@ export class VerifyUserSessionUseCase {
   async execute(id: string) {
     try { 
       if (!await this.userRepository.findBySessionId(id)) 
-        return { error: false, message: "", response: false };
+        return { error: true, message: "User not found" };
       
-      return true;
+      return { error: false, message: "User verified" };
     } catch (err: any) {
       return { error: true, message: "Error verifying user" };
     }

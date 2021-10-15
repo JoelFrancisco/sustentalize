@@ -1,6 +1,5 @@
-import { User } from "@prisma/client";
-
-import { IUserRepository } from "src/repositories/IUserRepository";
+import { User } from '../../../entities/User';
+import { IUserRepository } from "../../../repositories/UserRepository/IUserRepository";
 import { IHashPassword } from "src/utils/hash/IHashPassword";
 
 export class CreateUserUseCase {

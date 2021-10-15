@@ -1,7 +1,7 @@
 import { PrismaClient } from '@prisma/client';
 
 import { BcryptPassword } from '../../../utils/hash/Implementation/BcryptHashPassword';
-import { UserRepository } from '../../../repositories/Implementation/PostgresUserRepository';
+import { UserRepository } from '../../../repositories/UserRepository/Implementation/PostgresUserRepository';
 import { CreateUserUseCase } from './CreateUserUseCase';
 import { CreateUserController } from './CreateUserController';
 

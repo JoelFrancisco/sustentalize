@@ -1,13 +1,14 @@
 import { CreateProduct } from './useCases/product/createProduct';
 import { Router } from "express";
-import { CreateUser } from './useCases/user/createUser';
-import { LoginUser } from "./useCases/user/loginUsers";
-import { VerifySessionId } from "./useCases/user/verifySessionId";
+
 import { ListProduct } from './useCases/product/listProductById';
 import { UpdateProduct } from './useCases/product/updateProductController';
 import { DeleteProduct } from './useCases/product/deleteProductController';
 
 import { createUserController } from './useCases/user/CreateUser';
+import { verifyUserSessionController } from './useCases/user/VerifyUserSession';
+import { loginUserController } from './useCases/user/LoginUser';
+import { getUserFromSessionIdController } from './useCases/user/GetUserFromSessionId';
 
 const router = Router();
 
@@ -19,8 +20,17 @@ router.post('/user', async (req, res) => {
   return await createUserController.handle(req, res);
 });
 
-router.get('/user/verify', VerifySessionId.verify);
-router.post('/login', LoginUser.login);
+router.get('/user/verify', async (req, res) => {
+  return await verifyUserSessionController.handle(req, res);
+});
+
+router.post('/login', async (req, res) => {
+  return await loginUserController.handle(req, res);
+});
+
+router.get('/user/session', async (req, res) => {
+  return await getUserFromSessionIdController.handle(req, res);
+})
 
 router.post('/product', CreateProduct.create);
 router.get('/product', ListProduct.list);

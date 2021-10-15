@@ -1,15 +1,13 @@
-import { PrismaClient, User } from "@prisma/client";
+import { PrismaClient } from "@prisma/client";
 
+import { User } from '../../../entities/User';
 import { IUserRepository } from "../IUserRepository";
-import { IHashPassword } from "../../utils/hash/IHashPassword";
 
 export class UserRepository implements IUserRepository {
-  private client;
-
-  constructor(client: PrismaClient) {
-    this.client = client;
-  }
-
+  constructor(
+    private client: PrismaClient,
+  ){}
+  
   public async findByEmail(email: string) {
     try {
       const user = await this.client.user.findUnique({ 
@@ -18,7 +16,7 @@ export class UserRepository implements IUserRepository {
         }
       });
       
-      return user;
+      return user as User;
     } catch (err: any) {
       throw new Error(err.message);
     } finally {
@@ -34,14 +32,45 @@ export class UserRepository implements IUserRepository {
         }
       });
       
-      return user;
+      return user as User;
     } catch (err: any) {
       throw new Error(err.message);
     } finally {
       await this.client.$disconnect();
     }
   }
-  
+
+  public async deleteUser(id: number) {
+    try {
+      await this.client.user.delete({ 
+        where: { 
+          id
+        }
+      });
+    } catch (err: any) {
+      throw new Error(err.message);
+    } finally {
+      await this.client.$disconnect();
+    }
+  }
+
+  public async updateUser(user: User | null) {
+    try {
+      await this.client.user.update({ 
+        where: { 
+          email: user?.email
+        },
+        data: {
+          ...user 
+        }
+      });
+    } catch (err: any) {
+      throw new Error(err.message);
+    } finally {
+      await this.client.$disconnect();
+    }
+  }
+
   public async store(newUser: User) {
     try {
       const usernameAlreadyUsed = await this.client.user.findUnique({ 
@@ -87,25 +116,6 @@ export class UserRepository implements IUserRepository {
         error: true,
         message: err.message
       }
-    } finally {
-      await this.client.$disconnect();
-    }
-  }
-  
-  public async updateUser(user: User | null) {
-    console.log(`USER: ${user}`);
-
-    try {
-      await this.client.user.update({ 
-        where: { 
-          email: user?.email
-        },
-        data: {
-          ...user 
-        }
-      });
-    } catch (err: any) {
-      throw new Error(err.message);
     } finally {
       await this.client.$disconnect();
     }

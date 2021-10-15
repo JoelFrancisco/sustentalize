@@ -1,7 +1,7 @@
-import { IUserRepository } from '../../../repositories/IUserRepository';
+import { IUserRepository } from '../../../repositories/UserRepository/IUserRepository';
 import { ILoginUserDTO } from './ILoginUserDTO';
 import { IUuidGenerator } from '../../../utils/UuidGenerator/IUuidGenerator';
-import { IHashPassword } from 'src/utils/hash/IHashPassword';
+import { IHashPassword } from '../../../utils/hash/IHashPassword';
 
 export class LoginUserUseCase {
   constructor(

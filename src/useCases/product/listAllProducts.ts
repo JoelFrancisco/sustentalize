@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import { PrismaClient } from "@prisma/client";
-import { ProductRepository } from "../../repositories/Implementation/PostgressProductRepository";
+import { ProductRepository } from "../../repositories/ProductRepository/Implementation/PostgressProductRepository";
 
 export class ListAllProducts {
   public static async create(req: Request, res: Response) {
