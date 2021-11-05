@@ -1,0 +1,1 @@
+import { ProductRepository } from '../../../repositories/'

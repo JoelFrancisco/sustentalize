@@ -1,4 +1,5 @@
-import { User } from '../../../entities/User';
+//import { User } from '../../../entities/User';
+import { User } from '@prisma/client'
 import { IUserRepository } from "../../../repositories/UserRepository/IUserRepository";
 import { IHashPassword } from "src/utils/hash/IHashPassword";
 
