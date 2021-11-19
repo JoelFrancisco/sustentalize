@@ -9,11 +9,17 @@ import { createUserController } from './useCases/user/CreateUser';
 import { verifyUserSessionController } from './useCases/user/VerifyUserSession';
 import { loginUserController } from './useCases/user/LoginUser';
 import { getUserFromSessionIdController } from './useCases/user/GetUserFromSessionId';
+import { getUserFromEmailController } from './useCases/user/GetUserFromEmail';
 
 const router = Router();
 
 router.get('/test', (req, res) => {
   return res.status(200).json({ message: 'test' });
+});
+
+router.get('/user/:email', async (req, res) => {
+  console.log('a')
+  return await getUserFromEmailController.handle(req, res);
 });
 
 router.post('/user', async (req, res) => {

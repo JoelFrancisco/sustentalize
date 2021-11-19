@@ -12,11 +12,12 @@ export class LoginUserController {
     try { 
       const response = await this.loginUserUseCase.execute(req.body as ILoginUserDTO);
       
-      if (!response.error) 
+      if (response.error) 
         return res.status(400).json({ 
           message: response.message
         });
         
+      console.log("TESTE");
       res.cookie('session_id', response.id, { httpOnly: true, maxAge: 1200000 });
       
       return res.status(200).json({ 
