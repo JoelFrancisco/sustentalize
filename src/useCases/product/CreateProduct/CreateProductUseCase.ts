@@ -9,9 +9,9 @@ export class CreateProductUseCase {
   async execute(product: Product) {
     try { 
       return await this.productRepository.store(product);
-    } catch(err: any) {
-      return {
-        error: true,
+    } catch (err) {
+      return { 
+        error: true, 
         message: "Error creating product"
       }
     }
