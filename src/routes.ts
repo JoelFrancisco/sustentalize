@@ -17,17 +17,16 @@ router.get('/test', (req, res) => {
   return res.status(200).json({ message: 'test' });
 });
 
+router.get('/verify/user', async (req, res) => {
+  return await verifyUserSessionController.handle(req, res);
+});
+
 router.get('/user/:email', async (req, res) => {
-  console.log('a')
   return await getUserFromEmailController.handle(req, res);
 });
 
 router.post('/user', async (req, res) => {
   return await createUserController.handle(req, res);
-});
-
-router.get('/user/verify', async (req, res) => {
-  return await verifyUserSessionController.handle(req, res);
 });
 
 router.post('/login', async (req, res) => {

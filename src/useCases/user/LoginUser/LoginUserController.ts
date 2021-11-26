@@ -10,19 +10,18 @@ export class LoginUserController {
   
   async handle(req: Request, res: Response) {
     try { 
-      const response = await this.loginUserUseCase.execute(req.body as ILoginUserDTO);
+      const { email, password } = req.body;
+
+      const { error, message, ...rest } = await this.loginUserUseCase.execute({ email, password } as ILoginUserDTO);
       
-      if (response.error) 
-        return res.status(400).json({ 
-          message: response.message
-        });
-        
-      console.log("TESTE");
-      res.cookie('session_id', response.id, { httpOnly: true, maxAge: 1200000 });
-      
-      return res.status(200).json({ 
-        message: response.message
-      });
+      return error 
+        ? res.status(400).json({ message })
+        : res
+            .cookie('session_id', rest.id, { 
+              httpOnly: false, maxAge: 1200000 
+            })
+            .status(200)
+            .json({ message })
     } catch (err: any) {
       return res.status(400).json({ 
         message: err.message 
@@ -30,3 +29,4 @@ export class LoginUserController {
     }
   }
 }
+

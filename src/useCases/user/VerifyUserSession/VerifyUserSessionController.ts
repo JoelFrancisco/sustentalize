@@ -7,12 +7,11 @@ export class VerifyUserSessionController {
   ){}
   
   async handle(req: Request, res: Response) {
-    const id = req.cookies.session_id;
-    const { error, message } = await this.verifyUserSessionUseCase.execute(id);
+    const { session_id }= req.cookies;
+    const { error, message } = await this.verifyUserSessionUseCase.execute(session_id);
 
-    if (error) 
-      return res.status(400).json({ auth: false, message });
-    
-    return res.status(200).json({ auth: true, message });
+    return error
+      ? res.status(400).json({ auth: false, message })
+      : res.status(200).json({ auth: true, message }); 
   }
 }

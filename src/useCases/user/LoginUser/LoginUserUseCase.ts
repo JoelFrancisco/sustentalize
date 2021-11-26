@@ -20,7 +20,6 @@ export class LoginUserUseCase {
       const id = this.UuidGenerator.generateUuid();
       
       user.session_id = id;
-
       await this.userRepository.updateUser(user);
       
       return { 
