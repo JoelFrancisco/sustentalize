@@ -11,6 +11,8 @@ import { loginUserController } from './useCases/user/LoginUser';
 import { getUserFromSessionIdController } from './useCases/user/GetUserFromSessionId';
 import { getUserFromEmailController } from './useCases/user/GetUserFromEmail';
 
+import { createPreferenceControler } from './useCases/preference/CreatePreference';
+
 const router = Router();
 
 router.get('/test', (req, res) => {
@@ -36,6 +38,10 @@ router.post('/login', async (req, res) => {
 router.get('/user/session', async (req, res) => {
   return await getUserFromSessionIdController.handle(req, res);
 })
+
+router.post('/preference', async (req, res) => {
+  return await createPreferenceControler.handle(req, res);
+});
 
 router.post('/product', CreateProduct.create);
 router.get('/product', ListProduct.list);
