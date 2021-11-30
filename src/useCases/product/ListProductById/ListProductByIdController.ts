@@ -9,15 +9,15 @@ export class ListProductByIdController {
   ){}
 
   async handle(req: Request, res: Response) {
-    const { id } = req.body;
+    const { id } = req.params;
 
     try { 
-      const { error, message } = await this.listProductByIdUseCase.execute(id);
+      const { error, message, ...rest } = await this.listProductByIdUseCase.execute(Number(id));
 
       return error 
         ? res.status(400).json({ message }) 
-        : res.status(200).json({ message });
-    } catch(err) {
+        : res.status(200).json({ message, product: rest.product });
+    } catch(err: any) {
       return res.status(400).json({ 
         message: err.message || 'Unexpected error'
       })

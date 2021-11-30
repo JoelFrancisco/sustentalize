@@ -1,5 +1,6 @@
 import { ProductRepository } from "../../../repositories/ProductRepository/Implementation/PostgressProductRepository";
-import { Product } from "../../../entities/Product";
+import { Product } from "@prisma/client";
+import { Express } from 'express';
 
 export class CreateProductUseCase {
   constructor(

@@ -15,16 +15,12 @@ export class LoginUserController {
       const { error, message, ...rest } = await this.loginUserUseCase.execute({ email, password } as ILoginUserDTO);
       
       return error 
-        ? res.status(400).json({ message })
-        : res
-            .cookie('session_id', rest.id, { 
-              httpOnly: false, maxAge: 1200000 
-            })
-            .status(200)
-            .json({ message })
+        ? res.status(400).json({ message, login: false })
+        : res.status(200).json({ message, login: true, token: rest.token });
     } catch (err: any) {
       return res.status(400).json({ 
-        message: err.message 
+        message: err.message,
+        login: false
       });
     }
   }

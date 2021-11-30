@@ -9,7 +9,16 @@ export class CreateProductController implements IController {
   ){}
   
   async handle(req: Request, res: Response) {
-    const product = { ...req.body };
+    const product = { 
+      ...req.body, 
+      price: Number(req.body.price),
+      quantity: Number(req.body.quantity)
+    };
+
+    const { file } = req;
+
+    const fileName = file?.originalname;
+    product.image_url = fileName || "";
     
     try { 
       const { error, message } = await this.createProductUseCase.execute(product);

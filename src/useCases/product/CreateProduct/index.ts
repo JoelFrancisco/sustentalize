@@ -1,6 +1,6 @@
 import { PrismaClient } from '@prisma/client';
 
-import { ProductRepository } from 'src/repositories/ProductRepository/Implementation/PostgressProductRepository';
+import { ProductRepository } from '../../../repositories/ProductRepository/Implementation/PostgressProductRepository';
 import { CreateProductUseCase } from './CreateProductUseCase';
 import { CreateProductController } from './CreateProductController';
 

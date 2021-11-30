@@ -1,4 +1,4 @@
-import { Product } from  '../../entities/Product';
+import { Product } from  '@prisma/client';
 import { IProductStoreError } from './IProductStoreError';  
 
 export interface IProductRepository {

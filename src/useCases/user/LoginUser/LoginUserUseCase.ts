@@ -1,13 +1,13 @@
 import { IUserRepository } from '../../../repositories/UserRepository/IUserRepository';
 import { ILoginUserDTO } from './ILoginUserDTO';
-import { IUuidGenerator } from '../../../utils/UuidGenerator/IUuidGenerator';
+import { HandleTokenGeneration } from '../../../utils/HandleTokenGeneration';
 import { IHashPassword } from '../../../utils/hash/IHashPassword';
 
 export class LoginUserUseCase {
   constructor(
     private userRepository: IUserRepository,
-    private UuidGenerator: IUuidGenerator,
-    private handlePasswordHash: IHashPassword
+    private handlePasswordHash: IHashPassword,
+    private handleTokenGeneration: HandleTokenGeneration
   ){} 
   
   async execute({ email, password }: ILoginUserDTO) {
@@ -17,15 +17,12 @@ export class LoginUserUseCase {
       if (!user || !await this.handlePasswordHash.checkHash(password, user.password)) 
         return { error: true, message: 'Incorrect email or password' };
       
-      const id = this.UuidGenerator.generateUuid();
-      
-      user.session_id = id;
-      await this.userRepository.updateUser(user);
+      const token = this.handleTokenGeneration.generateToken(user.id.toString(), email);
       
       return { 
         error: false, 
         message: 'Login worked successfully', 
-        id 
+        token
       };
     } catch (err) {
       return { error: true, message: 'Login error' };

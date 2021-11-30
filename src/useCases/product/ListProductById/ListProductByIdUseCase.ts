@@ -1,5 +1,5 @@
 import { ProductRepository } from '../../../repositories/ProductRepository/Implementation/PostgressProductRepository';
-import { Product } from '../../../entities/Product';
+import { Product } from '@prisma/client';
 
 export class ListProductByIdUseCase {
   constructor(
@@ -8,7 +8,12 @@ export class ListProductByIdUseCase {
 
   async execute(id: number) {
     try {
-      return await this.productRepository.findById(id);
+      const product = await this.productRepository.findById(id);
+      return {
+        error: false,
+        message: "Product listed successfully", 
+        product
+      }
     } catch(err: any) {
       return {
         error: true, 
