@@ -1,7 +1,6 @@
-import { PrismaClient } from "@prisma/client";
+import { PrismaClient, Product } from "@prisma/client";
 
 import { IProductRepository } from "../IProductRepository";
-import { Product } from "@prisma/client";
 
 export class ProductRepository implements IProductRepository {
   private client;

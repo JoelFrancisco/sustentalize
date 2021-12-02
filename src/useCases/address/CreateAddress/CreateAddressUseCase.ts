@@ -8,18 +8,7 @@ export class CreateAddressUseCase {
 
   async execute(address: Address) {
     try { 
-      const _address = await this.addressRepository.store(address);
-
-      if (!_address) 
-        return {
-          error: true,
-          message: "Error creating address"
-        }
-
-      return { 
-        error: false, 
-        message: "Address created successfully" 
-      };
+      return await this.addressRepository.store(address);
     } catch (err) {
       return {
         error: true,

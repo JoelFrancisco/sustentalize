@@ -11,7 +11,7 @@ export class LoginUserController {
   async handle(req: Request, res: Response) {
     try { 
       const { email, password } = req.body;
-
+      
       const { error, message, ...rest } = await this.loginUserUseCase.execute({ email, password } as ILoginUserDTO);
       
       return error 

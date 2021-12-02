@@ -8,6 +8,31 @@ export class AddressRepository implements IAddressRepository {
   constructor(client: PrismaClient) {
     this.client = client;
   }
+  
+  public async findFromUser(id: number) {
+    console.log('teste');
+
+    try {
+      const addresses = await this.client.address.findMany({ 
+        where: { 
+          userId: id
+        }
+      });
+      
+      return { 
+        error: false, 
+        message: "Addresses found successfully",
+        addresses
+      };
+    } catch (err: any) {
+      return { 
+        error: true, 
+        message: err.message
+      };
+    } finally {
+      await this.client.$disconnect();
+    }
+  }
 
   public async findById(id: number) {
     try {
@@ -17,9 +42,9 @@ export class AddressRepository implements IAddressRepository {
         }
       });
 
-      return address;
+      return address as Address;
     } catch (err: any) {
-      return null;
+      throw new Error(err.message);
     } finally {
       await this.client.$disconnect();
     }
@@ -40,11 +65,17 @@ export class AddressRepository implements IAddressRepository {
     try { 
       await this.client.address.create({
         data: { ...address }
-      })
+      });
 
-      return address;
-    } catch (err) {
-      return null;
+      return { 
+        error: false,
+        message: 'Address created successfully'
+      };
+    } catch (err: any) {
+      return { 
+        error: true, 
+        message: err.message
+      };
     } finally {
       await this.client.$disconnect();
     }

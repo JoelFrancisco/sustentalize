@@ -37,7 +37,7 @@ model Product {
 model Address {
   id           Int    @id @default(autoincrement())
   zip_code     String
-  streat_name  String
+  street_name  String
   house_number Int
   User         User?  @relation(fields: [userId], references: [id])
   userId       Int?

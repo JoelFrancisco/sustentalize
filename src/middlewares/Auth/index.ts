@@ -1,9 +1,16 @@
 import jwt from 'jsonwebtoken';
-import { Request, Response, NextFunction } from 'express';
+import { NextFunction } from 'express';
 
-const auth = (req: Request, res: Response, next: NextFunction) => {
+type Decoded = {
+  id: string, 
+  email: string,
+  iat: number,
+  exp: number,
+}
+
+const auth = (req: any, res: any, next: NextFunction) => {
   const authHeader = req.headers.authorization;
-
+  
   if (!authHeader)
     return res.status(401).send({ unauth: true, error: 'No token' })
 
@@ -17,12 +24,14 @@ const auth = (req: Request, res: Response, next: NextFunction) => {
   if (!/^Bearer$/i.test(scheme))
     return res.status(401).send({ unauth: true, error: 'Token malformatted' });
 
-  jwt.verify(token, process.env.SECRET || "", (err, decoded) => {
-    if (err) return res.status(401).send({ unauth: true, error: 'Token invalid' });
+  jwt.verify(token, process.env.SECRET || "", (err: any, decoded: any) => {
+    if (err) 
+      return res.status(401).send({ unauth: true, error: 'Token invalid' });
+      
 
     if (decoded) {
-      req.body.user_id = decoded.id;
-      req.body.user_email = decoded.email;
+      req.id = decoded.id;
+      req.email = decoded.email;
     }
 
     return next();

@@ -1,4 +1,5 @@
 import { Request, Response } from 'express';
+import { Address } from '@prisma/client';
 
 import { CreateAddressUseCase } from './CreateAddressUseCase';
 
@@ -7,9 +8,13 @@ export class CreateAddressController {
     private createAddressUseCase: CreateAddressUseCase
   ){}
 
-  async handle(req: Request, res: Response) {
-    const address = { ...req.body };
+  async handle(req: any, res: Response) {
+    const address: Address = { ...req.body };
 
+    address.userId = Number(req.id);
+    
+    console.log(address);
+    
     try { 
       const { error, message } = await this.createAddressUseCase.execute(address);
 

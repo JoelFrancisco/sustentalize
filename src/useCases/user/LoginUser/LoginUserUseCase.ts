@@ -11,6 +11,9 @@ export class LoginUserUseCase {
   ){} 
   
   async execute({ email, password }: ILoginUserDTO) {
+    
+    console.log('Entrou no use case');
+
     try { 
       const user = await this.userRepository.findByEmail(email);
       

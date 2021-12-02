@@ -4,7 +4,18 @@ export class CreatePreferenceUseCase {
   ){}
 
   async execute(preference: any) {
-    const { id } = this.mercadopago.preferences.create(preference);
-    return id;
+    try { 
+      const res = await this.mercadopago.preferences.create(preference);
+      return { 
+        error: false, 
+        message: 'preference created successfully', 
+        id: res.response.id 
+      };  
+    } catch (err) {
+      return { 
+        error: true, 
+        message: 'preference creating failed' 
+      }; 
+    }
   }
 }
