@@ -2,6 +2,8 @@ import { PrismaClient, Product } from "@prisma/client";
 
 import { IProductRepository } from "../IProductRepository";
 
+import { deleteObject } from "../../../utils/DeleteObject";
+
 export class ProductRepository implements IProductRepository {
   private client;
 
@@ -87,13 +89,36 @@ export class ProductRepository implements IProductRepository {
 
   public async delete(id: number) {
     try {
+      const product = await this.client.product.findUnique({
+        where: {
+          id
+        }
+      });
+      
+      deleteObject(product?.image_url);
+    } catch(err: any) {
+      return { 
+        error: true,
+        message: err.message
+      }
+    }
+
+    try {
       await this.client.product.delete({
         where: {
           id
         }
       })
+      
+      return { 
+        error: false,
+        message: 'Product deleted successfully'
+      }
     } catch(err: any) {
-      throw new Error(err.message);
+      return { 
+        error: true,
+        message: err.message
+      }
     } finally {
       await this.client.$disconnect();
     }

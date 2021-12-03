@@ -16,7 +16,7 @@ export class LoginUserController {
       
       return error 
         ? res.status(400).json({ message, login: false })
-        : res.status(200).json({ message, login: true, token: rest.token });
+        : res.status(200).json({ message, login: true, token: rest.token, isAdmin: rest.isAdmin });
     } catch (err: any) {
       return res.status(400).json({ 
         message: err.message,

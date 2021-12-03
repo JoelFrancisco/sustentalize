@@ -11,9 +11,6 @@ export class LoginUserUseCase {
   ){} 
   
   async execute({ email, password }: ILoginUserDTO) {
-    
-    console.log('Entrou no use case');
-
     try { 
       const user = await this.userRepository.findByEmail(email);
       
@@ -22,10 +19,13 @@ export class LoginUserUseCase {
       
       const token = this.handleTokenGeneration.generateToken(user.id.toString(), email);
       
+      const isAdmin = user.role === 'ADMIN' ? true : false;
+      
       return { 
         error: false, 
         message: 'Login worked successfully', 
-        token
+        token,
+        isAdmin
       };
     } catch (err) {
       return { error: true, message: 'Login error' };

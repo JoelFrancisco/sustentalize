@@ -80,4 +80,26 @@ export class AddressRepository implements IAddressRepository {
       await this.client.$disconnect();
     }
   }
+  
+  public async delete(id: number) {
+    try { 
+      await this.client.address.delete({
+        where: { 
+          id 
+        }
+      });
+      
+      return { 
+        error: false,
+        message: 'Address deleted successfully'
+      };
+    } catch (err: any) {
+      return { 
+        error: true, 
+        message: err.message
+      };
+    } finally {
+      await this.client.$disconnect();
+    }
+  }
 }

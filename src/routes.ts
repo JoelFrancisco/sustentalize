@@ -25,6 +25,8 @@ import { listAllProductsController } from './useCases/product/ListAllProducts';
 import { auth } from './middlewares/Auth';
 import { createAddressController } from './useCases/address/CreateAddress';
 import { findAddressesFromUserController } from './useCases/address/FindAddressesFromUser';
+import { deleteAddressController } from './useCases/address/DeleteAddress';
+import { deleteProductController } from './useCases/product/DeleteProduct';
 
 const router = Router();
 
@@ -91,6 +93,14 @@ router.post('/address', auth, async (req: any, res: Response) => {
 
 router.get('/addresses', auth, async (req: any, res: Response) => {
   return await findAddressesFromUserController.handle(req, res);
+});
+
+router.delete('/address/:id', auth, async (req: any, res: Response) => {
+  return await deleteAddressController.handle(req, res);
+});
+
+router.delete('/product/:id', auth, async (req: any, res: Response) => {
+  return await deleteProductController.handle(req, res);
 });
 
 export { router };
